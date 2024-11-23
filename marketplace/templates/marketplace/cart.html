@@ -87,13 +87,17 @@
                                         </li>
                         
                                         <!-- Tax -->
+                                         {% for key ,value in tax_dict.items %}
+                                         {% for i,j in value.items %}
                                         <li class="order-item">
-                                            Tax
+                                            {{key}}<small>{{i}}</small>
                                             <span class="price float-right">
                                                 <span class="currency">$</span>
-                                                <span id="tax">{{tax}}</span>
+                                                <span id="tax-{{key}}">{{j}}</span>
                                             </span>
                                         </li>
+                                        {% endfor %}
+                                        {% endfor %}
                         
                                         <!-- Total -->
                                         <li class="order-item font-weight-bold">
