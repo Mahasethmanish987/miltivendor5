@@ -1,0 +1,6 @@
+{% autoescape off %}
+hi,{{user.username}}
+please click the link to verify your accounts
+<a href="http://{{domain}}{% url 'accounts:activate' uid token %}"></a>
+
+{% endautoescape %}

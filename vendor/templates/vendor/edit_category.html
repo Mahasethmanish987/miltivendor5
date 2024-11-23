@@ -1,0 +1,64 @@
+{% extends 'myapp/base.html'%}
+{% load static %}
+{% block body %}
+
+<div class="main-section">
+   {% include 'vendor/cover.html' %}
+    <div class="page-section account-header buyer-logged-in">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                  <!-- load the sidebar     -->
+                   {% include 'vendor/v_sidebar.html' %}
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                    <div class="user-dashboard loader-holder">
+                        <div class="user-holder">
+                            <h5 class="text-uppercase">Build you FoodMenu</h5>
+                            <hr>
+                            <button class="btn btn-secondary" onclick="history.back()"><i class="fa fa-angle-left" aria-hidden="true"></i>Back</button>
+                           
+                              <h6>Modify Categories</h6>
+                              <form method="POST" action="">
+                                {% csrf_token %}
+                                  <div class="form fields-set">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            <div class="field-holder">
+                                                <label>
+                                                    Category Name*
+                                                </label>
+                                                {{form.category_name}}
+                                                {% if form.category_name.errors %}
+                                                 {{form.category_name.errors}}
+                                                 {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            <div class="field-holder">
+                                                <label>
+                                                    Category Description
+                                                </label>
+                                                {{form.description}}
+                                                {% if form.category_description.errors %}
+                                                 {{form.category_description.errors}}
+                                                 {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                  </div>
+                                  <button type="submit" class="btn btn-info"><i class="fa fa-check"></i>Update</button>
+                            </form>
+                           
+                            
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Main Section End -->
+
+{% endblock %}

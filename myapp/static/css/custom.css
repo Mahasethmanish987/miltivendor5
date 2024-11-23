@@ -1,0 +1,147 @@
+.notification-container {
+    position: fixed;
+    bottom: 20px; /* Distance from the bottom of the viewport */
+    right: 20px; /* Distance from the right */
+    z-index: 1050;
+    display: flex;
+    flex-direction: column; /* Stack alerts vertically */
+    gap: 10px; /* Space between alerts */
+}
+
+/* Custom alert styling */
+.custom-alert {
+    width: 350px; /* Adjust for readability */
+    background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background for a modern feel */
+    border: 1px solid rgba(0, 0, 0, 0.1); /* Subtle border */
+    border-radius: 8px; /* Smooth corners */
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2); /* Stronger shadow for depth */
+    font-family: 'Arial', sans-serif; /* Clean font */
+    padding: 15px; /* Add padding for better spacing */
+    color: #333; /* Dark text for contrast */
+}
+
+/* Success messages */
+.alert-success {
+    background-color: #dff0d8; /* Light green background */
+    color: #3c763d; /* Dark green text */
+}
+
+/* Error messages */
+.alert-danger {
+    background-color: #f2dede; /* Light red background */
+    color: #a94442; /* Dark red text */
+}
+
+/* Warning messages */
+.alert-warning {
+    background-color: #fcf8e3; /* Light yellow background */
+    color: #8a6d3b; /* Brownish text */
+}
+
+/* Info messages */
+.alert-info {
+    background-color: #d9edf7; /* Light blue background */
+    color: #31708f; /* Dark blue text */
+}
+
+/* Fade-out animation */
+.fade-out {
+    animation: fadeOut 4s ease forwards; /* Duration adjusted for smoother effect */
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+        transform: translateY(0); /* Initial position */
+    }
+    70% {
+        opacity: 1; /* Maintain visibility */
+        transform: translateY(-5px); /* Slight lift for a floating effect */
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-20px); /* Move upward while fading out */
+        display: none;
+    }
+}
+.btn{
+    padding:2px 1.75em;
+    font-size:12px ;
+    cursor:pointer;
+}
+.attachment-full {
+    width: 100%;
+    height: auto;
+}
+.company-logo ul {
+    display: flex;
+    flex-wrap: nowrap; /* Prevents wrapping to the next line */
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.company-logo li {
+    width: 12.5%; /* Ensure 8 images fit within 100% width */
+    box-sizing: border-box; /* Ensures padding/border don’t affect the width */
+    padding: 5px; /* Optional spacing between items */
+}
+
+.company-logo img {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+table > tbody > tr > td{
+    border:none !important;
+}
+
+#opening_hours select{
+    padding:5px 10px !important ;
+}
+.btn-success.add_hour{
+    padding: 7px 15px 7px 15px ;
+}
+
+/* Dropdown is hidden by default */
+
+/* .delivery-dropdown {
+     display: none; 
+    position: absolute; /* Position relative to parent */
+    /* top: 100%; Position below the parent element */
+    /* left: 0; Align with the parent */
+    /* background-color: #fff; Background color */
+    /* border: 1px solid #ccc; Border for visibility */
+    /* z-index: 1000; Ensure it appears above other elements */
+    /* list-style: none; Remove bullet points */
+    /* padding: 10px 0; Add padding for dropdown items */
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); Optional shadow for depth */
+/* }  */
+
+.delivery-dropdown li {
+    padding: 5px 20px; /* Add padding for items */
+}
+
+.delivery-dropdown li:hover {
+    background-color: #f0f0f0; /* Highlight on hover */
+}
+
+.reviews-sortby-active:hover + .delivery-dropdown {
+    display: block; /* Show dropdown on hover */
+} */
+.delivery-dropdown li {
+    display: flex; /* Use flexbox for alignment */
+    justify-content: space-between; /* Space between day and time */
+    align-items: center; /* Vertically center align items */
+    padding: 5px 20px; /* Add padding for dropdown items */
+    font-size: 14px; /* Adjust font size for better readability */
+}
+
+.delivery-dropdown li span {
+    margin-right: 10px; /* Add spacing between day and time */
+    white-space: nowrap; /* Prevent wrapping of text */
+}
+
+.delivery-dropdown li:hover {
+    background-color: #f0f0f0; /* Highlight on hover */
+}

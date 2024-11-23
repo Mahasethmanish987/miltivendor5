@@ -1,0 +1,172 @@
+{% extends 'myapp/base.html'%}
+{% load static %}
+{% block body %}
+
+<div class="main-section">
+   {% include 'vendor/cover.html' %}
+    <div class="page-section account-header buyer-logged-in">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                  <!-- load the sidebar     -->
+                   {% include 'vendor/v_sidebar.html' %}
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                    <div class="user-dashboard loader-holder">
+                        <div class="user-holder">
+                            <h5 class="text-uppercase">Manage Your restaurant</h5>
+                            <form action="{% url 'vendor:vprofile' %}" method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="form-fields-set">
+                                    <ul>
+                                        <li>
+                                            <div class="row">
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="restaurant-info">
+                                                        <div class="img-holder">
+                                                            <ul class="foodbakery-gallery-holder">
+                                                                <li class="gal-img">
+                                                                    <div class="drag-list">
+                                                                        <div class="item-thumb">
+                                                                            <img class="thumbnail" src="{% if profile.profile_picture %}{{profile.profile_picture.url}}{% else %}{% static 'images/default-profile.PNG'%}{% endif %}" alt="">
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="text-holder">
+                                                            <label>Update Logo</label>
+                                                            <div class="upload-gallery">
+                                                                {{user_profile.profile_picture}}
+                                                            </div>
+                                                            {% if user_profile.profile_picture.errors %}
+                                      <div class="text-danger">
+                                        {{ user_profile.profile_picture.errors }}
+                                      </div>
+                                      {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="restaurant-info">
+                                                        <div class="img-holder">
+                                                            <ul class="foodbakery-gallery-holder">
+                                                                <li class="gal-img">
+                                                                    <div class="drag-list">
+                                                                        <div class="item-thumb">
+                                                                            <img class="thumbnail" src="{% if profile.cover_photo %}{{profile.cover_photo.url}}{% else %}{% static 'images/default-cover.PNG'%}{% endif %}" alt="">
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="text-holder">
+                                                            <label>Update Cover Photo</label>
+                                                            <div class="upload-gallery">
+                                                                {{user_profile.cover_photo}}
+                                                            </div>
+                                                            {% if user_profile.cover_photo.errors %}
+                                      <div class="text-danger">
+                                        {{ user_profile.cover_photo.errors }}
+                                      </div>
+                                      {% endif %}
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="restaurant-info">
+                                                        <div class="img-holder">
+                                                            <ul class="foodbakery-gallery-holder">
+                                                                <li class="gal-img">
+                                                                    <div class="drag-list">
+                                                                        <div class="item-thumb">
+                                                                            <img class="thumbnail" src="{{vendor.vendor_license.url}}" alt="">
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="text-holder">
+                                                            <label>Update License</label>
+                                                            <div class="upload-gallery">
+                                                                {{vendor_profile.vendor_license}}
+                                                            </div>
+                                                            {% if vendor_profile.vendor_license.errors %}
+                                      <div class="text-danger">
+                                        {{ vendor_profile.vendor_license.errors }}
+                                      </div>
+                                      {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="field-holder">
+                                                        <label>Restaurant name *</label>
+                                                        {{vendor_profile.vendor_name}}
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="field-holder">
+                                                        <label>Address</label>
+                                                        {{user_profile.address}}
+                                                        <small class="text-muted float-right">powered by Google</small>
+                                                    </div>
+                                                </div>
+                                                <div id="map"></div>
+                                               
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="field-holder">
+                                                        <label>Country</label>
+                                                        {{user_profile.country}}
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="field-holder">
+                                                        <label>State</label>
+                                                        {{user_profile.state}}
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="field-holder">
+                                                        <label>pin_code</label>
+                                                        {{user_profile.pin_code}}
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="field-holder">
+                                                        <label>Latitude</label>
+                                                        {{user_profile.latitude}}
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="field-holder">
+                                                        <label>Longitude</label>
+                                                        {{user_profile.longitude}}
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <div>
+                                        <div class="field-holder">
+                                            <div class="payment-holder input-button-loader">
+                                                <input  type="submit" value="Update you restaurnat">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            
+                             
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Main Section End -->
+
+{% endblock %}

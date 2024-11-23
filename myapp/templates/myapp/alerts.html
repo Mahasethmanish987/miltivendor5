@@ -1,0 +1,13 @@
+{% if messages %}
+    <div class="notification-container">
+        {% for message in messages %}
+            <div class="custom-alert alert-{{ message.tags }} fade-out" role="alert">
+                <span class="icon"></span>
+                <span>
+                    <strong>{{ message.tags|title }}:</strong> {{ message }}
+                </span>
+               
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}

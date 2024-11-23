@@ -1,0 +1,57 @@
+{% extends 'myapp/base.html'%}
+{% load static %}
+{% block body %}
+
+<div class="main-section">
+   {% include 'vendor/cover.html' %}
+    <div class="page-section account-header buyer-logged-in">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                  <!-- load the sidebar     -->
+                   {% include 'vendor/v_sidebar.html' %}
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                    <div class="user-dashboard loader-holder">
+                        <div class="user-holder">
+                            <h5 class="text-uppercase">Build Your FoodMenu</h5>
+                            <hr>
+                            <button class="btn btn-secondary" onclick="history.back()"><i class="fa fa-angle-left" aria-hidden="true"></i>Back</button>
+                            <a href="{% url 'vendor:add_food' %}" class="btn btn-success float-right"><i class="fa fa-plus" aria-hidden="true"></i>Add Food</a>
+                            <br>
+                            <br>
+                            <h6>Category:<span class="text-uppercase text-success">{{category}}</span></h6>
+                            {% if fooditems%}
+                            <table class="table table-hover table-borderless">
+                                {% for food in fooditems %}
+                                 <tr>
+                                    <td class="text-left">{{forloop.counter}}</td>
+                                    <td class="text-left"><img height="50px" width="50px" src="{{food.image.url}}">   </td>
+                                    <td><a href=""><p class="mb-0 font-weight-bold">{{food}}</p>
+                                    <small class="text-muted" >{{food.description}}</small></a></td>
+                                    {% if food.is_available %}
+                                    <td><span class="badge badge-success">Available</span></td>
+                                    {% else %}
+                                    <td><span class="badge badge-danger"> Not Available</span></td>
+                                    {% endif %}
+                                    <td><a href="{% url 'vendor:edit_food' food.pk %}"><i class="fa fa-edit" aria-hidden="true"></i></a></td>
+                                    <td><a href="{% url 'vendor:delete_food' food.pk%}" onclick="return confirm('Are you sure want to delete the fooditems')"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+                                 </tr>
+                                {% endfor %}
+                            </table>
+                            {% else %}
+                            <h5 class="text-danger text-center">No Food Item Founds</h5>
+                            <div class="text-center">
+                                <a href="{% url 'vendor:add_food' %}" class="btn btn-success"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp; Add Food</a>
+                            </div>
+                            {% endif%}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Main Section End -->
+
+{% endblock %}
