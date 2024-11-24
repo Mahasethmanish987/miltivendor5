@@ -89,13 +89,11 @@ def myAccount(request):
     if redirectUrl=='admin:index':
         return redirect('admin:index')
     elif redirectUrl=='customerDashboard':
-        return redirect('accounts:customerDashboard')
+        return redirect('customer:customerDashboard')
     else:
         return redirect('vendor:vendorDashboard')
     
-@login_required(login_url='accounts:login')
-def customerDashboard(request):
-    return HttpResponse('testing')
+
 
 def activate(request,uid,token):
     try:
@@ -114,8 +112,7 @@ def activate(request,uid,token):
     else:
         messages.error(request,'Invalid Link')
         return redirect('accounts:userRegister')
-def customerDashboard(request):
-    return render(request,'accounts/customerDashboard.html')
+
 
 
 def forgot_password(request):

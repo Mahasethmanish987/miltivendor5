@@ -28,7 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     '127.0.0.1',        # Localhost
-    '10.10.3.152',   
+    '10.10.3.152',  
+     '192.168.1.65' 
 ]
 
 
@@ -47,6 +48,7 @@ INSTALLED_APPS = [
     'menu',
     'marketplace',
     'django.contrib.gis',
+    'customer',
 ]
 
 MIDDLEWARE = [
@@ -76,6 +78,7 @@ TEMPLATES = [
                 'vendor.context_processor.get_google_api',
                 'marketplace.context_processor.get_cart_counter',
                 'marketplace.context_processor.get_cart_amount',
+                'customer.context_processors.get_user_profile',
             ],
         },
     },
