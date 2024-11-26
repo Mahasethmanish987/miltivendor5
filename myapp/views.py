@@ -37,7 +37,7 @@ def index(request):
    context={
        'vendors':vendors
    }
-   print(vendors)            
+              
 
     
 

@@ -145,3 +145,22 @@ table > tbody > tr > td{
 .delivery-dropdown li:hover {
     background-color: #f0f0f0; /* Highlight on hover */
 }
+
+.payment-method1 input[type=radio]{
+  position:absolute;
+  opacity:0;
+  width:0;
+  height:0;
+}
+
+/* Image-style*/
+.payment-method1 input[type=radio]+img{
+    cursor:pointer;
+    padding:5px ;
+
+
+}
+/* checked style*/
+.payment-method1 input[type=radio]:checked+img{
+    outline:2px solid black ;
+}

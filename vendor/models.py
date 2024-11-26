@@ -51,7 +51,8 @@ class Vendor(models.Model):
                 mail_template='vendor/admin_approval.html'
                 context={
                     'user':self.user,
-                    'is_approved':self.is_approved
+                    'is_approved':self.is_approved,
+                    'to_email':self.user.email
                 } 
                 if self.is_approved==True:
                     mail_subject='congratulatins your menu has been registered'

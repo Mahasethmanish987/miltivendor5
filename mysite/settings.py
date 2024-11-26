@@ -49,6 +49,10 @@ INSTALLED_APPS = [
     'marketplace',
     'django.contrib.gis',
     'customer',
+    'order',
+    'rest_framework',
+    'csp',
+    
 ]
 
 MIDDLEWARE = [
@@ -79,6 +83,7 @@ TEMPLATES = [
                 'marketplace.context_processor.get_cart_counter',
                 'marketplace.context_processor.get_cart_amount',
                 'customer.context_processors.get_user_profile',
+                'customer.context_processors.get_paypal_client_id',
             ],
         },
     },
@@ -164,3 +169,16 @@ os.environ['PROJ_LIB'] = 'C:\\Users\\Manish Mahaseth\\Desktop\\multivendor4\\ven
 
 # Set GDAL_LIBRARY_PATH for GDAL to locate the library
 GDAL_LIBRARY_PATH = 'C:\\Users\\Manish Mahaseth\\Desktop\\multivendor4\\venv\\Lib\\site-packages\\osgeo\\gdal.dll'
+
+
+PAYPAL_CLIENT_ID='AZX9UrVFCr_euz3bwcQ-Un32Ok5_r_7ax3sMyw4dnKlcfmvJ8zKOoYp93AGDn0HiGvefec8Ems1MljIC'
+
+
+SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"
+SECURE_CROSS_ORIGIN_EMBEDDER_POLICY = None  # Avoid stricter rules
+
+# settings.py
+
+# Celery configuration
+CELERY_BROKER_URL = 'redis://localhost:6379/0'  # Use Redis as the broker
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'  # Use Redis for storing task results

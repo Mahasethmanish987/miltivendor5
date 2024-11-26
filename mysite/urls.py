@@ -19,6 +19,7 @@ from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
 from marketplace import views as marketviews 
+from order import views as orderviews 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,4 +30,9 @@ urlpatterns = [
     path('cart/',marketviews.cart,name='cart'),
     path('search/',marketviews.search,name='search'),
     path('customer/',include('customer.urls')),
+    path('checkout/',marketviews.checkout,name='checkout') ,
+    path('order/',include('order.urls')),
+    path('demo/checkout/api/paypal/order/create/',orderviews.create_order,name='create_order'),
+    path('demo/checkout/api/paypal/order/<str:order_id>/capture/',orderviews.capture_order,name='create_order'),
+
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
