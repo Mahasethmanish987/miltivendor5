@@ -114,7 +114,24 @@
                                                 <span id="total">{{grand_total}}</span>
                                             </span>
                                         </li>
+                                        {% if order.payment_method == 'paypal'%}
                                         <div id="paypal-button-container"></div>
+                                        {% elif order.payment_method == 'esewa' %}
+                                        <form action="https://rc-epay.esewa.com.np/api/epay/main/v2/form" method="POST">
+                                            <input type="hidden" id="amount" name="amount" value="1000" required>
+                                            <input type="hidden" id="tax_amount" name="tax_amount" value ="10" required>
+                                            <input type="hidden" id="total_amount" name="total_amount" value="1010" required>
+                                            <input type="hidden" id="transaction_uuid" name="transaction_uuid" value="241028" required>
+                                            <input type="hidden" id="product_code" name="product_code" value ="EPAYTEST" required>
+                                            <input type="hidden" id="product_service_charge" name="product_service_charge" value="0" required>
+                                            <input type="hidden" id="product_delivery_charge" name="product_delivery_charge" value="0" required>
+                                            <input type="hidden" id="success_url" name="success_url" value="http://127.0.0.1:8000/order/payments/" required>
+                                            <input type="hidden" id="failure_url" name="failure_url" value="http://google.com" required>
+                                            <input type="hidden" id="signed_field_names" name="signed_field_names" value="total_amount,transaction_uuid,product_code" required>
+                                            <input type="hidden" id="signature" name="signature" value="i94zsd3oXF6ZsSr/kGqT4sSzYQzjj1W/waxjWyRwaME=" required>
+                                            <button onclick="generateSignature()" type="submit" class="btn btn-success">Pay with eSewa</button>
+                                            </form>
+                                        {% endif %}
                                     </ul>
                                 </div> 
                                 </div>
@@ -131,6 +148,23 @@
 
 </div>
 <script>
+
+ function generateSignature()
+ {
+            // Generate transaction UUID
+            var currentTime = new Date();
+        var formattedTime = currentTime.toISOString().slice(2, 10).replace(/-/g, '') + '-' + currentTime.getHours() + currentTime.getMinutes() + currentTime.getSeconds();
+        document.getElementById("transaction_uuid").value = formattedTime;
+        var total_amount = document.getElementById("total_amount").value;
+        var transaction_uuid = document.getElementById("transaction_uuid").value;
+        var product_code = document.getElementById("product_code").value;
+        var secret = "8gBm/:&EnhH.1/q"; 
+        var hash = CryptoJS.HmacSHA256(`total_amount=${total_amount},transaction_uuid=${transaction_uuid},product_code=${product_code}`, secret);
+        var hashInBase64 = CryptoJS.enc.Base64.stringify(hash);
+        document.getElementById("signature").value = hashInBase64;// Replace with your actual secret key
+
+ }
+
     var url="{% url 'order:payments'%}"
     var order_complete="{% url 'order:order_complete' %}"
     var order_number="{{order.order_number}}"
