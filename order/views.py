@@ -15,6 +15,8 @@ from .models import OrderedFood
 from accounts.utils import send_notification
 import base64
 import json
+from menu.models import FoodItem
+from marketplace.models import Tax
 # Create your views here.
 
 class DecimalEncoder(json.JSONEncoder):
@@ -28,11 +30,48 @@ def place_order(request):
     cart_count=cart_items.count()
     if cart_count<=0:
         return redirect('marketplace:marketplace')
+    vendors_ids=[]
+    k={}
+    for i in cart_items:
+        if i.fooditem.vendor.id not in vendors_ids:
+             vendors_ids.append(i.fooditem.vendor.id)
+       
+    subtotal=0
+    total_data={}
+    get_tax=Tax.objects.filter(is_active=True)
+    tax_dict1={}
+    for i in cart_items:
+        fooditem=FoodItem.objects.get(pk=i.fooditem.id,vendor__in=vendors_ids)
+        v_id=fooditem.vendor.id 
+
+        if v_id in k:
+            subtotal=k[v_id]
+            subtotal+=(fooditem.price *i.quantity )
+            k[v_id]=subtotal
+        else:
+            subtotal =(fooditem.price * i.quantity )    
+            k[v_id]=subtotal
+
+        
+
+    
+    #calculate the tax data
+    
+        for i in get_tax:
+           tax_type=i.tax_type 
+           tax_percentage=i.tax_percentage
+           tax_amount=round((tax_percentage*subtotal)/100,2)
+           tax_dict1.update({tax_type:{str(tax_percentage):str(tax_amount)}})
+    # total_data.update({fooditem.vendor.id:{subtotal:tax_dict1}}) 
+        total_data.update({fooditem.vendor.id:{str(subtotal):str(tax_dict1)}})
+     
+    
     subtotal=get_cart_amount(request)['subtotal']
     total_tax=get_cart_amount(request)['tax']
     grand_total=get_cart_amount(request)['grand_total']
     tax_data=get_cart_amount(request)['tax_dict']
     
+      
 
     if request.method=="POST":
         form=OrderForm(request.POST)
@@ -48,6 +87,7 @@ def place_order(request):
             order.pin_code=form.cleaned_data['pin_code']
             order.user=request.user
             order.total=grand_total
+            order.total_data=json.dumps(total_data)
             order.tax_data=json.dumps(tax_data,cls=DecimalEncoder)
             order.total_tax=total_tax
             order.payment_method=request.POST['payment_method']
@@ -55,6 +95,7 @@ def place_order(request):
 
             order.save()
             order.order_number=generate_order(request.user.id,order.id)
+            order.vendors.add(*vendors_ids)
             order.save()
             context={
                 'order':order,
@@ -200,7 +241,7 @@ def payments(request):
         'to_email':order.email
         
      }
-     send_notification.delay(mail_subject,mail_template,context)
+     send_notification(mail_subject,mail_template,context)
     
 
     # send order received email to the vendor
@@ -216,7 +257,7 @@ def payments(request):
         
         'to_email':to_emails,
      }
-     send_notification.delay(mail_subject,mail_template,context)
+     send_notification(mail_subject,mail_template,context)
     
 
     #clear the cart items 
@@ -290,7 +331,7 @@ def payments(request):
         'to_email':order.email
         
          }
-        send_notification.delay(mail_subject,mail_template,context)
+        send_notification(mail_subject,mail_template,context)
     
 
     # send order received email to the vendor
@@ -306,7 +347,7 @@ def payments(request):
         
           'to_email':to_emails,
           }
-        send_notification.delay(mail_subject,mail_template,context)
+        send_notification(mail_subject,mail_template,context)
         order_complete_url = "/order/order_complete/"
         cart_items.delete()
         redirect_url=f"{order_complete_url}?order_no={order_number}&trans_id={transaction_id}"

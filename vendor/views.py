@@ -17,6 +17,8 @@ from .forms import OpeningHourForm
 from .models import OpeningHour
 from django.http import JsonResponse 
 from django.db import IntegrityError
+from order.models import Order,OrderedFood
+import datetime 
 
 
 # Create your views here.
@@ -28,7 +30,33 @@ def get_vendor(request):
 @login_required(login_url='accounts:login')
 @user_passes_test(check_vendor)
 def vendorDashboard(request):
-    return render(request,'vendor/vendorDashboard.html')
+    vendor=Vendor.objects.get(user=request.user)
+    orders=Order.objects.filter(vendors__in=[vendor.id],is_ordered=True).order_by('created_at')
+    recent_orders=orders[:10]
+    # Current month's revenue
+
+    current_month=datetime.datetime.now().month
+    current_month_orders=orders.filter(vendors__in=[vendor.id],created_at__month=current_month)
+    current_month_revenue=0
+    for i  in current_month_orders:
+         current_month_revenue += i.get_total_by_vendor()['grand_total']
+    
+
+    #total revenue
+    total_revenue=0
+    for i in orders:
+        total_revenue+=i.get_total_by_vendor()['grand_total']
+
+    context={
+        'orders':orders,
+        'orders_count':orders.count(),
+        'recent_orders':recent_orders,
+        'total_revenue':total_revenue,
+        'current_month_revenue':current_month_revenue,
+    }
+
+
+    return render(request,'vendor/vendorDashboard.html',context)
 
 
 def vendorRegister(request):
@@ -295,6 +323,35 @@ def remove_opening_hour(request,pk=None):
             hour=get_object_or_404(OpeningHour,pk=pk)
             hour.delete()
             return JsonResponse({'status':'success','id':pk})
+        
+
+def order_detail(request,order_number):
+    try:
+        order=Order.objects.get(order_number=order_number,is_ordered=True)
+        print(order)
+        ordered_food=OrderedFood.objects.filter(order=order,fooditem__vendor=get_vendor(request))
+        context={
+            'order':order,
+            'ordered_food':ordered_food,
+            'subtotal':order.get_total_by_vendor()['subtotal'],
+            'tax_data':order.get_total_by_vendor()['tax_dict'],
+            'grand_total':order.get_total_by_vendor()['grand_total'],
+
+
+        }
+    except:
+        return render('vendor:vendorDashboard')    
+    return render(request,'vendor/order_detail.html',context)
+
+
+def my_orders(request):
+    vendor=Vendor.objects.get(user=request.user)
+    orders=Order.objects.filter(vendors__in=[vendor.id],is_ordered=True).order_by('created_at')
+    context={
+        'orders':orders
+    }
+    return render(request,'vendor/my_orders.html',context)
+
 
 
     

@@ -114,7 +114,7 @@
                                                 <span id="total">{{grand_total}}</span>
                                             </span>
                                         </li>
-                                        {% if order.payment_method == 'paypal'%}
+                                        {% if order.payment_method == 'paypal' %}
                                         <div id="paypal-button-container"></div>
                                         {% elif order.payment_method == 'esewa' %}
                                         <form action="https://rc-epay.esewa.com.np/api/epay/main/v2/form" method="POST">
